@@ -123,6 +123,10 @@ void execute_cgi(int client, char* path, char* method, char* query_string) {
     }
 }
 
+/************************************
+ * 处理HTTP报文，判断请求方法，拆解URL，
+ * 运行CGI程序
+************************************/
 
 void accept_request(* arg) {
     int client = (intptr_t)arg;
@@ -205,6 +209,14 @@ void accept_request(* arg) {
     }
 }
 
+/*********************************
+ 创建socket，主要有以下几步：
+ * 创建socket文件描述符
+ * 设置端口复用
+ * 绑定端口号（如果没有合适的端口号则自动获取一个端口号）
+ * 设置监听
+**********************************/
+
 void startup(u_short port) {
     int httpd = 0;
     int on = 1;
@@ -236,6 +248,13 @@ void startup(u_short port) {
     }
     return httpd;
 }
+
+/*****************************
+ * 主函数负责建立服务器socket
+ * 通过accept函数去响应客户端
+ * 的连接，对于每个连接建立一个
+ * 新的线程进行连接。
+*****************************/
 
 int main() {
     int sock_server = -1;
